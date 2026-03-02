@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"app/components/BaziForm.tsx -> ./MapPicker":{"id":6078,"files":["static/css/1de76be520b4de19.css","static/chunks/d0deef33.53a40f89e3d32118.js","static/chunks/78.6b25d628d18c78de.js"]}}';
+self.__REACT_LOADABLE_MANIFEST="{\"app/components/BaziForm.tsx -> ./MapPicker\":{\"id\":\"app/components/BaziForm.tsx -> ./MapPicker\",\"files\":[\"static/css/_app-pages-browser_app_components_MapPicker_tsx.css\",\"static/chunks/_app-pages-browser_app_components_MapPicker_tsx.js\"]}}"

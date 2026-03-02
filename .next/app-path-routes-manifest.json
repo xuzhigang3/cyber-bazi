@@ -1,10 +1,10 @@
 {
   "/sitemap.xml/route": "/sitemap.xml",
   "/robots.txt/route": "/robots.txt",
-  "/page": "/",
   "/_not-found/page": "/_not-found",
+  "/page": "/",
   "/api/generate/route": "/api/generate",
-  "/api/checkout/route": "/api/checkout",
   "/api/report/[id]/route": "/api/report/[id]",
+  "/api/checkout/route": "/api/checkout",
   "/api/webhook/route": "/api/webhook"
 }
