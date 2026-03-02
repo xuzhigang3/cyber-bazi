@@ -12,6 +12,9 @@ async function getStats() {
         const paidOrders = await db.prepare('SELECT COUNT(*) as count FROM reports WHERE is_paid = 1').first<{ count: number }>();
         const totalUsers = await db.prepare('SELECT COUNT(DISTINCT email) as count FROM reports').first<{ count: number }>();
 
+        // AI Usage Stats
+        const aiStats = await db.prepare('SELECT SUM(total_tokens) as tokens, SUM(cost) as cost FROM ai_usage').first<{ tokens: number, cost: number }>();
+
         // Estimate GMV ($9.9 per report)
         const gmv = (paidOrders?.count || 0) * 9.9;
 
@@ -20,10 +23,12 @@ async function getStats() {
             paidOrders: paidOrders?.count || 0,
             totalUsers: totalUsers?.count || 0,
             gmv: gmv.toFixed(2),
+            totalTokens: aiStats?.tokens || 0,
+            totalCost: (aiStats?.cost || 0).toFixed(4)
         };
     } catch (e) {
         console.error(e);
-        return { totalOrders: 0, paidOrders: 0, totalUsers: 0, gmv: "0.00" };
+        return { totalOrders: 0, paidOrders: 0, totalUsers: 0, gmv: "0.00", totalTokens: 0, totalCost: "0.0000" };
     }
 }
 
@@ -31,9 +36,9 @@ export default async function DashboardPage() {
     const stats = await getStats();
 
     const cards = [
-        { title: "Total Reports", value: stats.totalOrders, icon: Activity, color: "text-blue-600", bg: "bg-blue-100" },
         { title: "Paid Orders", value: stats.paidOrders, icon: TrendingUp, color: "text-green-600", bg: "bg-green-100" },
-        { title: "Unique Users", value: stats.totalUsers, icon: Users, color: "text-purple-600", bg: "bg-purple-100" },
+        { title: "Total Tokens", value: stats.totalTokens.toLocaleString(), icon: Activity, color: "text-blue-600", bg: "bg-blue-100" },
+        { title: "AI Cost (USD)", value: `$${stats.totalCost}`, icon: DollarSign, color: "text-red-600", bg: "bg-red-100" },
         { title: "Est. GMV ($)", value: `$${stats.gmv}`, icon: DollarSign, color: "text-amber-600", bg: "bg-amber-100" },
     ];
 
@@ -56,16 +61,36 @@ export default async function DashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 min-h-[300px]">
-                    <h2 className="text-lg font-bold mb-4">AI Usage Efficiency</h2>
-                    <div className="flex items-center justify-center h-full text-slate-400">
-                        Chart Placeholder (AI Token Consumption)
+                <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 min-h-[300px]">
+                    <h2 className="text-lg font-bold mb-6">Cost Distribution</h2>
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-500">Infrastructure (Cloudflare)</span>
+                            <span className="font-bold text-green-600">Free Tier</span>
+                        </div>
+                        <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div className="bg-green-500 h-full w-[100%]" />
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-500">AI Tokens (Estimated)</span>
+                            <span className="font-bold text-red-600">${stats.totalCost}</span>
+                        </div>
+                        <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div className="bg-red-500 h-full w-[15%]" />
+                        </div>
                     </div>
+                    <p className="mt-8 text-xs text-slate-400 italic">
+                        * Costs are estimated based on current model pricing (Gemini 2.0 / OpenAI).
+                        Actual billing may vary per provider.
+                    </p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 min-h-[300px]">
-                    <h2 className="text-lg font-bold mb-4">Recent Reach</h2>
-                    <div className="flex items-center justify-center h-full text-slate-400">
-                        Chart Placeholder (Visitor Origins)
+
+                <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 min-h-[300px]">
+                    <h2 className="text-lg font-bold mb-6">Platform Activity</h2>
+                    <div className="flex flex-col items-center justify-center h-full gap-4">
+                        <div className="text-4xl font-black text-slate-100 tracking-tighter uppercase opacity-50">Live Traffic</div>
+                        <p className="text-slate-400 text-sm">Unique Users: {stats.totalUsers}</p>
                     </div>
                 </div>
             </div>
