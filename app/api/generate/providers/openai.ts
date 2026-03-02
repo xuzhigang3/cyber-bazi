@@ -5,6 +5,8 @@ export class OpenAIProvider implements IAIProvider {
     private baseUrl: string;
     private modelName: string;
 
+    public config?: import('./interface').AIConfig;
+
     constructor(apiKey: string, baseUrl: string = 'https://api.openai.com/v1', modelName: string = 'gpt-4o') {
         this.apiKey = apiKey;
         this.baseUrl = baseUrl;
@@ -12,6 +14,12 @@ export class OpenAIProvider implements IAIProvider {
     }
 
     async generateContent(prompt: string): Promise<AIResponse> {
+        const messages: any[] = [];
+        if (this.config?.systemPrompt) {
+            messages.push({ role: 'system', content: this.config.systemPrompt });
+        }
+        messages.push({ role: 'user', content: prompt });
+
         const res = await fetch(`${this.baseUrl}/chat/completions`, {
             method: 'POST',
             headers: {
@@ -20,10 +28,8 @@ export class OpenAIProvider implements IAIProvider {
             },
             body: JSON.stringify({
                 model: this.modelName,
-                messages: [
-                    { role: 'user', content: prompt }
-                ],
-                temperature: 0,
+                messages: messages,
+                temperature: this.config?.temperature ?? 0,
                 seed: 42,
                 response_format: { type: 'json_object' }
             }),
@@ -36,8 +42,20 @@ export class OpenAIProvider implements IAIProvider {
 
         const data = await res.json() as any;
         const content = data.choices[0]?.message?.content;
+        const usage = data.usage;
+
         if (!content) throw new Error('OpenAI failed to generate content');
 
-        return JSON.parse(content) as AIResponse;
+        const result = JSON.parse(content) as AIResponse;
+
+        if (usage) {
+            result.usage = {
+                promptTokens: usage.prompt_tokens,
+                completionTokens: usage.completion_tokens,
+                totalTokens: usage.total_tokens
+            };
+        }
+
+        return result;
     }
 }

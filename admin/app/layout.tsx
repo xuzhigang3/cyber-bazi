@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { LayoutDashboard, ShoppingCart, Settings, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Settings, Users, LogOut, Activity } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -33,6 +33,10 @@ export default function RootLayout({
                         <Link href="/users" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors">
                             <Users size={20} />
                             <span>Users</span>
+                        </Link>
+                        <Link href="/usage" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors">
+                            <Activity size={20} />
+                            <span>AI Usage</span>
                         </Link>
                         <Link href="/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors">
                             <Settings size={20} />

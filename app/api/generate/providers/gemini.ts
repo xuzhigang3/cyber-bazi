@@ -4,6 +4,7 @@ import { IAIProvider, AIResponse } from './interface';
 export class GeminiProvider implements IAIProvider {
     private ai: GoogleGenAI;
     private modelName: string;
+    public config?: import('./interface').AIConfig;
 
     constructor(apiKey: string, modelName: string = 'gemini-2.0-flash') {
         this.ai = new GoogleGenAI({ apiKey });
@@ -11,11 +12,15 @@ export class GeminiProvider implements IAIProvider {
     }
 
     async generateContent(prompt: string): Promise<AIResponse> {
+        const fullPrompt = this.config?.systemPrompt
+            ? `${this.config.systemPrompt}\n\nUser Question: ${prompt}`
+            : prompt;
+
         const response = await this.ai.models.generateContent({
             model: this.modelName,
-            contents: prompt,
+            contents: fullPrompt,
             config: {
-                temperature: 0,
+                temperature: this.config?.temperature ?? 0,
                 topP: 0.1,
                 responseMimeType: 'application/json',
                 responseSchema: {
@@ -39,14 +44,27 @@ export class GeminiProvider implements IAIProvider {
             },
         });
 
-        if (!response.text) throw new Error('Gemini failed to generate content');
+        const usage = response.usageMetadata;
+        const text = response.text;
 
-        let jsonStr = response.text.trim();
+        if (!text) throw new Error('Gemini failed to generate content');
+
+        let jsonStr = text.trim();
         // Clean up potential markdown formatting if not handled by responseMimeType
         if (jsonStr.startsWith('```json')) jsonStr = jsonStr.substring(7);
         else if (jsonStr.startsWith('```')) jsonStr = jsonStr.substring(3);
         if (jsonStr.endsWith('```')) jsonStr = jsonStr.substring(0, jsonStr.length - 3);
 
-        return JSON.parse(jsonStr.trim()) as AIResponse;
+        const result = JSON.parse(jsonStr.trim()) as AIResponse;
+
+        if (usage) {
+            result.usage = {
+                promptTokens: usage.promptTokenCount,
+                completionTokens: usage.candidatesTokenCount,
+                totalTokens: usage.totalTokenCount
+            };
+        }
+
+        return result;
     }
 }

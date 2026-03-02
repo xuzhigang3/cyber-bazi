@@ -1,10 +1,4 @@
 {
-  "/sitemap.xml/route": "app/sitemap.xml/route.js",
-  "/robots.txt/route": "app/robots.txt/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
-  "/api/generate/route": "app/api/generate/route.js",
-  "/api/report/[id]/route": "app/api/report/[id]/route.js",
-  "/api/checkout/route": "app/api/checkout/route.js",
-  "/api/webhook/route": "app/api/webhook/route.js"
+  "/_not-found/page": "app/_not-found/page.js"
 }

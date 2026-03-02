@@ -6,3 +6,16 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Next.js
+.next/
+out/
+
+# Cloudflare
+.vercel/
+.wrangler/
+dist-pages/
+
+# Databases
+*.db
+*.sqlite

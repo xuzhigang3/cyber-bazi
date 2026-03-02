@@ -64,34 +64,48 @@ export async function POST(req: NextRequest) {
     const provider = await getProvider(db);
     const result = await provider.generateContent(prompt);
 
+    // --- Calculate Cost (Simplified) ---
+    const usage = result.usage;
+    let estimatedCost = 0;
+    if (usage) {
+      const isGemini = (await db.prepare('SELECT value FROM configs WHERE key = ?').bind('AI_PROVIDER').first<{ value: string }>())?.value !== 'openai';
+      if (isGemini) {
+        // Gemini 2.0 Flash pricing approx
+        estimatedCost = (usage.promptTokens * 0.1 / 1000000) + (usage.completionTokens * 0.4 / 1000000);
+      } else {
+        // GPT-4o pricing approx
+        estimatedCost = (usage.promptTokens * 5.0 / 1000000) + (usage.completionTokens * 15.0 / 1000000);
+      }
+    }
+
     // --- Save to D1 ---
     const id = uuidv4();
     const reportText = result.report || '';
     const teaser = reportText.substring(0, 200) + (reportText.length > 200 ? '\n\n...' : '');
 
-    await db
-      .prepare(
+    // Use a transaction or sequential executes
+    await db.batch([
+      db.prepare(
         `INSERT INTO reports (id, name, gender, date, time, location, email, bazi_year, bazi_month, bazi_day, bazi_hour, summary, teaser, full_report, is_paid, input_hash)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+      ).bind(
+        id, data.name, data.gender, data.date, data.time, data.location, data.email,
+        result.bazi.year, result.bazi.month, result.bazi.day, result.bazi.hour,
+        result.summary, teaser, result.report, inputHash
+      ),
+      db.prepare(
+        `INSERT INTO ai_usage (id, provider, model, prompt_tokens, completion_tokens, total_tokens, cost)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        uuidv4(),
+        (await db.prepare('SELECT value FROM configs WHERE key = ?').bind('AI_PROVIDER').first<{ value: string }>())?.value || 'gemini',
+        (await db.prepare('SELECT value FROM configs WHERE key = ?').bind('AI_MODEL').first<{ value: string }>())?.value || 'gemini-2.0-flash',
+        usage?.promptTokens || 0,
+        usage?.completionTokens || 0,
+        usage?.totalTokens || 0,
+        estimatedCost
       )
-      .bind(
-        id,
-        data.name,
-        data.gender,
-        data.date,
-        data.time,
-        data.location,
-        data.email,
-        result.bazi.year,
-        result.bazi.month,
-        result.bazi.day,
-        result.bazi.hour,
-        result.summary,
-        teaser,
-        result.report,
-        inputHash
-      )
-      .run();
+    ]);
 
     return NextResponse.json({
       id,

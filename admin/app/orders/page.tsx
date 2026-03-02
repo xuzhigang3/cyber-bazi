@@ -1,5 +1,4 @@
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { format } from "date-fns"; // Check if installed, if not will use vanilla
 import { FileText, CheckCircle, Clock } from "lucide-react";
 
 export const runtime = 'edge';
