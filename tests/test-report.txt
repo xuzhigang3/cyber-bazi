@@ -1,0 +1,21 @@
+
+--- 业务流程测试报告 ---
+
+✅ Step 1: 首次生成成功，状态为未支付 (is_paid=0)
+✅ Step 2: 模拟支付成功，报告已解锁 (is_paid=1)
+✅ Step 3: 幂等性校验通过，相同输入自动识别已支付记录
+
+测试结论：系统核心闭环（生成->支付->复用）逻辑验证通过。
+▶ Full Business Workflow Test (Mocked)
+  ✔ Step 1: Generate Initial Report (Unpaid) (0.780333ms)
+  ✔ Step 2: Simulate Payment (Webhook) (0.072333ms)
+  ✔ Step 3: Idempotency Check (Session Reuse) (0.137833ms)
+✔ Full Business Workflow Test (Mocked) (1.981959ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6.052791
