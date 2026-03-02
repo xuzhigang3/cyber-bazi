@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://cyber-bazi.kaiserxu.asia/sitemap.xml

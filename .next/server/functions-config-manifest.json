@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/report/[id]": {},
+    "/api/checkout": {},
+    "/api/generate": {},
+    "/api/webhook": {}
+  }
+}

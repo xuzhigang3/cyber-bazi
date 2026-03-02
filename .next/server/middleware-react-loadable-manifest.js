@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"app/components/BaziForm.tsx -> ./MapPicker\":{\"id\":\"app/components/BaziForm.tsx -> ./MapPicker\",\"files\":[\"static/css/_app-pages-browser_app_components_MapPicker_tsx.css\",\"static/chunks/_app-pages-browser_app_components_MapPicker_tsx.js\"]}}"

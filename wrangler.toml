@@ -1,0 +1,9 @@
+name = "cyber-bazi"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "reports"
+database_id = "8d85cf03-2f84-4eb0-93f8-6e2ac258ec48"

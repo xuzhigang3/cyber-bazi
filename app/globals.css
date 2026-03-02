@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Microsoft YaHei", "微软雅黑", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Microsoft YaHei", "微软雅黑", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  --color-theme-bg: var(--bg-primary);
+  --color-theme-text: var(--text-primary);
+  --color-theme-muted: var(--text-secondary);
+  --color-theme-accent: var(--accent-color);
+  --color-theme-border: var(--border-color);
+  --color-theme-card: var(--card-bg);
+}
+
+:root {
+  /* Light Purple Theme */
+  --bg-primary: #F3E8FF; /* Tailwind purple-100 */
+  --text-primary: #4C1D95; /* Tailwind purple-900 */
+  --text-secondary: #7C3AED; /* Tailwind purple-600 */
+  --accent-color: #9333EA; /* Tailwind purple-600 */
+  --border-color: rgba(147, 51, 234, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark Theme (Can be toggled by adding .theme-dark to body) */
+.theme-dark {
+  --bg-primary: #050505;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent-color: #C5A059; /* Muted Gold */
+  --border-color: rgba(255, 255, 255, 0.15);
+  --card-bg: rgba(255, 255, 255, 0.03);
+}
+
+@layer utilities {
+  .prose {
+    @apply text-theme-text/80;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    @apply text-theme-accent font-serif font-medium mt-8 mb-4;
+  }
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+  .prose ul {
+    @apply list-disc pl-5 mb-4 space-y-2;
+  }
+  .prose li {
+    @apply pl-1;
+  }
+  .prose strong {
+    @apply text-theme-text font-medium;
+  }
+  .prose blockquote {
+    @apply border-l-2 border-theme-accent/50 pl-4 italic text-theme-muted my-6;
+  }
+}
