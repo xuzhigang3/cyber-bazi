@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     const prompt = getDefaultPrompt(langInstruction, data, lang);
 
     const { getProvider } = await import('./providers/factory');
-    const provider = getProvider();
+    const provider = await getProvider(db);
     const result = await provider.generateContent(prompt);
 
     // --- Save to D1 ---
