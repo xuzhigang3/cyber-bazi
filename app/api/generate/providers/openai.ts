@@ -24,6 +24,7 @@ export class OpenAIProvider implements IAIProvider {
                     { role: 'user', content: prompt }
                 ],
                 temperature: 0,
+                seed: 42,
                 response_format: { type: 'json_object' }
             }),
         });
