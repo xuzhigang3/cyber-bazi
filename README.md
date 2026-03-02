@@ -6,7 +6,7 @@ Cyber Bazi is a premium web application that combines traditional Chinese Four P
 
 ## ✨ Features
 
-- **AI-Powered Analysis**: Uses Gemini 1.5 Flash (server-side) for professional Bazi reading.
+- **Multi-AI Provider**: Supports **Google Gemini**, **OpenAI**, and **DeepSeek** (OpenAI compatible).
 - **Global Reach**: Supports both **Traditional Chinese** and **English** (Bilingual) reporting.
 - **Guest Checkout**: Seamless payment flow via **Lemon Squeezy** (Credit Card, PayPal, Alipay).
 - **Interactive Map**: Precise birth location selection with automatic True Solar Time conversion.
@@ -28,7 +28,11 @@ Copy `.env.example` to `.env.local` and configure the following:
 
 | Variable | Description |
 | :--- | :--- |
-| `GEMINI_API_KEY` | Google AI Studio API Key |
+| `AI_PROVIDER` | `gemini` or `openai` |
+| `AI_MODEL` | Model name (e.g., `gemini-2.0-flash`, `gpt-4o`) |
+| `GEMINI_API_KEY` | Required if provider is `gemini` |
+| `OPENAI_API_KEY` | Required if provider is `openai` |
+| `OPENAI_BASE_URL` | Optional for OpenAI-compatible APIs (e.g., DeepSeek) |
 | `LEMON_SQUEEZY_API_KEY` | Lemon Squeezy API Key |
 | `LEMON_SQUEEZY_STORE_ID` | Your Lemon Squeezy Store ID |
 | `LEMON_SQUEEZY_VARIANT_ID` | Your Product Variant ID |

@@ -2,30 +2,30 @@
   "version": 3,
   "middleware": {},
   "functions": {
-    "/api/report/[id]/route": {
+    "/api/generate/route": {
       "files": [
         "server/server-reference-manifest.js",
-        "server/app/api/report/[id]/route_client-reference-manifest.js",
+        "server/app/api/generate/route_client-reference-manifest.js",
         "server/middleware-build-manifest.js",
         "server/middleware-react-loadable-manifest.js",
         "server/next-font-manifest.js",
         "server/interception-route-rewrite-manifest.js",
         "server/edge-runtime-webpack.js",
         "server/edge-chunks/790.js",
-        "server/app/api/report/[id]/route.js"
+        "server/app/api/generate/route.js"
       ],
-      "name": "app/api/report/[id]/route",
-      "page": "/api/report/[id]/route",
+      "name": "app/api/generate/route",
+      "page": "/api/generate/route",
       "matchers": [
         {
-          "regexp": "^/api/report/(?<id>[^/]+?)$",
-          "originalSource": "/api/report/[id]"
+          "regexp": "^/api/generate$",
+          "originalSource": "/api/generate"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "-hb3RR5mBQTsxkX2109rc",
+        "__NEXT_BUILD_ID": "HEBHd8U9zKDCPaYS6CDEI",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "amdR7Q6nfsEwE2WhVE5/bS0hni6ddTPxwoGLv5HMfN4=",
         "__NEXT_PREVIEW_MODE_ID": "8e06f41f53385989a06fddc957eabfc6",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "37b7ecd29f6f3eb63b3e7e4c0774c8c2894de6702a609c10198600943628705c",
@@ -55,37 +55,37 @@
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "-hb3RR5mBQTsxkX2109rc",
+        "__NEXT_BUILD_ID": "HEBHd8U9zKDCPaYS6CDEI",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "amdR7Q6nfsEwE2WhVE5/bS0hni6ddTPxwoGLv5HMfN4=",
         "__NEXT_PREVIEW_MODE_ID": "8e06f41f53385989a06fddc957eabfc6",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "37b7ecd29f6f3eb63b3e7e4c0774c8c2894de6702a609c10198600943628705c",
         "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "a38d50e472beb94746843f844a52c901558b12de4033f811a3899b99d083fa8c"
       }
     },
-    "/api/generate/route": {
+    "/api/report/[id]/route": {
       "files": [
         "server/server-reference-manifest.js",
-        "server/app/api/generate/route_client-reference-manifest.js",
+        "server/app/api/report/[id]/route_client-reference-manifest.js",
         "server/middleware-build-manifest.js",
         "server/middleware-react-loadable-manifest.js",
         "server/next-font-manifest.js",
         "server/interception-route-rewrite-manifest.js",
         "server/edge-runtime-webpack.js",
         "server/edge-chunks/790.js",
-        "server/app/api/generate/route.js"
+        "server/app/api/report/[id]/route.js"
       ],
-      "name": "app/api/generate/route",
-      "page": "/api/generate/route",
+      "name": "app/api/report/[id]/route",
+      "page": "/api/report/[id]/route",
       "matchers": [
         {
-          "regexp": "^/api/generate$",
-          "originalSource": "/api/generate"
+          "regexp": "^/api/report/(?<id>[^/]+?)$",
+          "originalSource": "/api/report/[id]"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "-hb3RR5mBQTsxkX2109rc",
+        "__NEXT_BUILD_ID": "HEBHd8U9zKDCPaYS6CDEI",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "amdR7Q6nfsEwE2WhVE5/bS0hni6ddTPxwoGLv5HMfN4=",
         "__NEXT_PREVIEW_MODE_ID": "8e06f41f53385989a06fddc957eabfc6",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "37b7ecd29f6f3eb63b3e7e4c0774c8c2894de6702a609c10198600943628705c",
@@ -115,7 +115,7 @@
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "-hb3RR5mBQTsxkX2109rc",
+        "__NEXT_BUILD_ID": "HEBHd8U9zKDCPaYS6CDEI",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "amdR7Q6nfsEwE2WhVE5/bS0hni6ddTPxwoGLv5HMfN4=",
         "__NEXT_PREVIEW_MODE_ID": "8e06f41f53385989a06fddc957eabfc6",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "37b7ecd29f6f3eb63b3e7e4c0774c8c2894de6702a609c10198600943628705c",
