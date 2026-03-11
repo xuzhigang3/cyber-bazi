@@ -172,7 +172,7 @@ export default function BaziResult({ result, input, onReset }: Props) {
       </div>
 
       {/* Detailed Report */}
-      <div className="bg-theme-card backdrop-blur-md border border-theme-border rounded-3xl p-8 md:p-12 relative overflow-hidden">
+      <div className="bg-theme-card/40 backdrop-blur-xl border border-theme-border/30 rounded-3xl p-8 md:p-12 relative overflow-hidden">
         <div className="flex items-center justify-between mb-10 border-b border-theme-border pb-8">
           <h3 className="text-xl font-serif text-theme-text tracking-[0.2em] uppercase">{t('reportTitle')}</h3>
           {isUnlocked && (
@@ -191,8 +191,8 @@ export default function BaziResult({ result, input, onReset }: Props) {
         </div>
 
         {!isUnlocked && (
-          <div className="absolute bottom-0 left-0 right-0 h-80 md:h-96 bg-gradient-to-t from-theme-bg via-theme-bg/95 to-transparent flex flex-col items-center justify-end pb-8 md:pb-12 px-4 md:px-6">
-            <div className="bg-theme-card backdrop-blur-xl border border-theme-border rounded-2xl p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shrink-0">
+          <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-theme-bg via-theme-bg/80 to-transparent flex flex-col items-center justify-end pb-8 md:pb-12 px-4 md:px-6">
+            <div className="bg-theme-card/60 backdrop-blur-2xl border border-theme-border/50 rounded-2xl p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shrink-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-theme-accent"></div>
               <Lock className="w-6 h-6 text-theme-accent mx-auto mb-4 md:mb-5" strokeWidth={1.5} />
               <h4 className="text-lg font-serif text-theme-text mb-2 md:mb-3 tracking-wide">{t('unlockTitle')}</h4>

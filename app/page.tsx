@@ -64,7 +64,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen text-theme-text font-sans selection:bg-theme-accent/30">
+    <div className="min-h-screen text-theme-text font-sans selection:bg-theme-accent/30 bg-transparent">
       {/* Background Effects are handled by globals.css (body::before) */}
 
       {/* Language Switcher */}
@@ -134,7 +134,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-purple-50 flex items-center justify-center text-purple-900">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-transparent flex items-center justify-center text-theme-accent font-serif tracking-widest uppercase text-xs">Loading...</div>}>
       <AppContent />
     </Suspense>
   );

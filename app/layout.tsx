@@ -76,7 +76,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="font-sans antialiased bg-theme-bg text-theme-text">
+      <body className="font-sans antialiased text-theme-text bg-transparent">
         <LanguageProvider>
           <JsonLd />
           {children}

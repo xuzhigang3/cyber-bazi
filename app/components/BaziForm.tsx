@@ -114,7 +114,10 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
         </div>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-8 bg-theme-card backdrop-blur-md p-8 md:p-10 rounded-2xl border border-theme-border">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-2xl bg-theme-card/40 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-theme-border/30 relative overflow-hidden"
+      >
         <div className="space-y-6">
           {/* Name */}
           <div className="space-y-2">
@@ -187,6 +190,10 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
                 className="w-full bg-transparent border-b border-theme-border py-3 text-theme-text placeholder-theme-muted/50 focus:outline-none focus:border-theme-accent transition-colors font-serif"
               />
             </div>
+            <p className="text-[10px] sm:text-xs text-theme-muted/70 font-serif mt-1.5 flex items-center gap-1.5">
+              <ShieldCheck className="w-3 h-3" />
+              {t('emailHint')}
+            </p>
           </div>
 
           {/* Confirm Email */}

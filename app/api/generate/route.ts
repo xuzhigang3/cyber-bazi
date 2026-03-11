@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDefaultPrompt } from '../../../prompt.config';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import type { BaziInput } from '../../services/geminiService';
+import { getProvider } from './providers/factory';
 
 export const runtime = 'edge';
 
@@ -60,8 +61,7 @@ export async function POST(req: NextRequest) {
     // --- AI generation (server-side only, key not exposed to client) ---
     const prompt = getDefaultPrompt(langInstruction, data, lang);
 
-    const { getProvider } = await import('./providers/factory');
-    const provider = await getProvider(db);
+    const provider = await getProvider(db, env as any);
     const result = await provider.generateContent(prompt);
 
     // --- Calculate Cost (Simplified) ---
