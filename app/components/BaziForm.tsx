@@ -88,7 +88,7 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
             <YiIcon className="w-24 h-24" aria-label="Cyber Bazi Logo" />
           </div>
         </div>
-        <h1 id="form-title" className="text-4xl md:text-5xl font-serif tracking-[0.15em] text-theme-text mb-4 font-light">
+        <h1 id="form-title" className="text-4xl md:text-5xl tracking-[0.15em] text-theme-text mb-4" style={{ fontFamily: "'Ma Shan Zheng', serif" }}>
           {t('appTitle')}
         </h1>
         <div className="flex items-center justify-center gap-4 mb-6">
@@ -116,7 +116,7 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
 
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-theme-card/40 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-theme-border/30 relative overflow-hidden"
+        className="w-full max-w-2xl bg-theme-card/40 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-theme-accent/20 relative overflow-hidden shadow-[inset_0_0_80px_rgba(201,163,66,0.06),0_0_60px_rgba(0,0,0,0.5)]"
       >
         <div className="space-y-6">
           {/* Name */}
