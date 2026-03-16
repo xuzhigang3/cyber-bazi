@@ -46,6 +46,10 @@ export async function getProvider(db?: any, env?: Record<string, string | undefi
             getEnv('OPENAI_BASE_URL'),
             aiModel
         );
+    } else if (providerType === 'ollama') {
+        const baseUrl = getEnv('OLLAMA_BASE_URL') || 'http://localhost:11434';
+        const { OllamaProvider } = await import('./ollama');
+        provider = new OllamaProvider(baseUrl, aiModel);
     } else {
         // Default to Gemini
         const apiKey = getEnv('GEMINI_API_KEY');
