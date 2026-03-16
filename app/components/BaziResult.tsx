@@ -17,8 +17,12 @@ interface Props {
 
 export default function BaziResult({ result, input, onReset }: Props) {
   const { t, language } = useLanguage();
-  const { bazi, summary, report, teaser, id } = result;
-  const isUnlocked = !!report;
+  const { bazi, summary_zh, summary_en, teaser_zh, teaser_en, report_zh, report_en, id } = result;
+  const currentSummary = language === 'en' ? summary_en : summary_zh;
+  const currentReport = language === 'en' ? report_en : report_zh;
+  const currentTeaser = language === 'en' ? teaser_en : teaser_zh;
+  
+  const isUnlocked = !!(report_zh || report_en);
   const [isPaying, setIsPaying] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [checkoutUrl, setCheckoutUrl] = useState('');
@@ -166,7 +170,7 @@ export default function BaziResult({ result, input, onReset }: Props) {
         <div className="text-center border-t border-theme-border pt-10 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-1.5 w-3 h-3 bg-theme-bg border border-theme-border rotate-45"></div>
           <p className="text-lg md:text-xl font-serif text-theme-text/90 italic leading-relaxed max-w-2xl mx-auto">
-            &quot;{summary}&quot;
+            &quot;{currentSummary}&quot;
           </p>
         </div>
       </div>
@@ -187,7 +191,7 @@ export default function BaziResult({ result, input, onReset }: Props) {
         </div>
 
         <div className={`prose max-w-none font-serif leading-loose ${!isUnlocked ? 'select-none' : ''}`}>
-          <Markdown>{isUnlocked ? report! : teaser!}</Markdown>
+          <Markdown>{isUnlocked ? currentReport! : currentTeaser!}</Markdown>
         </div>
 
         {!isUnlocked && (

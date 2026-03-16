@@ -11,8 +11,10 @@ export interface AIResponse {
         day: string;
         hour: string;
     };
-    summary: string;
-    report: string;
+    summary_zh: string;
+    summary_en: string;
+    report_zh: string;
+    report_en: string;
     usage?: AIUsage;
 }
 

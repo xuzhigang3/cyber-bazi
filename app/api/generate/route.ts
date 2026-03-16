@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
 
     // Check if a paid report with the same input already exists
     const existingPaid = await db
-      .prepare('SELECT id, bazi_year, bazi_month, bazi_day, bazi_hour, summary, teaser FROM reports WHERE input_hash = ? AND is_paid = 1 LIMIT 1')
-      .bind(inputHash)
+      .prepare('SELECT id, bazi_year, bazi_month, bazi_day, bazi_hour, summary, teaser FROM reports WHERE input_hash = ? AND lang = ? AND is_paid = 1 LIMIT 1')
+      .bind(inputHash, lang)
       .first<any>();
 
     if (existingPaid) {
@@ -80,18 +80,25 @@ export async function POST(req: NextRequest) {
 
     // --- Save to D1 ---
     const id = uuidv4();
-    const reportText = result.report || '';
-    const teaser = reportText.substring(0, 200) + (reportText.length > 200 ? '\n\n...' : '');
+    const reportTextZh = result.report_zh || '';
+    const reportTextEn = result.report_en || '';
+    const teaserZh = reportTextZh.substring(0, 200) + (reportTextZh.length > 200 ? '\n\n...' : '');
+    const teaserEn = reportTextEn.substring(0, 200) + (reportTextEn.length > 200 ? '\n\n...' : '');
 
     // Use a transaction or sequential executes
     await db.batch([
       db.prepare(
-        `INSERT INTO reports (id, name, gender, date, time, location, email, bazi_year, bazi_month, bazi_day, bazi_hour, summary, teaser, full_report, is_paid, input_hash)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+        `INSERT INTO reports (
+          id, name, gender, date, time, location, email, 
+          bazi_year, bazi_month, bazi_day, bazi_hour, 
+          summary_zh, summary_en, teaser_zh, teaser_en, full_report_zh, full_report_en, 
+          is_paid, input_hash
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
       ).bind(
         id, data.name, data.gender, data.date, data.time, data.location, data.email,
         result.bazi.year, result.bazi.month, result.bazi.day, result.bazi.hour,
-        result.summary, teaser, result.report, inputHash
+        result.summary_zh, result.summary_en, teaserZh, teaserEn, result.report_zh, result.report_en,
+        inputHash
       ),
       db.prepare(
         `INSERT INTO ai_usage (id, provider, model, prompt_tokens, completion_tokens, total_tokens, cost)
@@ -110,8 +117,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       id,
       bazi: result.bazi,
-      summary: result.summary,
-      teaser,
+      summary_zh: result.summary_zh,
+      summary_en: result.summary_en,
+      teaser_zh: teaserZh,
+      teaser_en: teaserEn,
     });
   } catch (error: any) {
     console.error(error);

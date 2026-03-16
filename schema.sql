@@ -13,8 +13,10 @@ CREATE TABLE IF NOT EXISTS reports (
   bazi_hour TEXT,
   summary TEXT,
   teaser TEXT,
-  full_report TEXT,
+  full_report_zh TEXT,
+  full_report_en TEXT,
   is_paid INTEGER DEFAULT 0,
+  lang TEXT DEFAULT 'zh',
   input_hash TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -26,8 +26,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
           day: report.bazi_day,
           hour: report.bazi_hour,
         },
-        summary: report.summary,
-        report: report.full_report,
+        summary_zh: report.summary_zh,
+        summary_en: report.summary_en,
+        teaser_zh: report.teaser_zh,
+        teaser_en: report.teaser_en,
+        report_zh: report.full_report_zh,
+        report_en: report.full_report_en,
         isPaid: true,
       },
       input: {
@@ -37,6 +41,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         time: report.time,
         location: report.location,
         email: report.email,
+        language: report.lang,
       },
     });
   } catch (error: any) {

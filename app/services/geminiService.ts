@@ -19,9 +19,12 @@ export interface BaziResult {
     day: string;
     hour: string;
   };
-  summary: string;
-  teaser?: string;
-  report?: string;
+  summary_zh: string;
+  summary_en: string;
+  report_zh?: string;
+  report_en?: string;
+  teaser_zh?: string;
+  teaser_en?: string;
   isPaid?: boolean;
 }
 

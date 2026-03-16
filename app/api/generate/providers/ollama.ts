@@ -2,23 +2,31 @@ import { IAIProvider, AIResponse } from './interface';
 
 export class OllamaProvider implements IAIProvider {
     private baseUrl: string;
+    private apiKey: string | undefined;
     private modelName: string;
 
     public config?: import('./interface').AIConfig;
 
-    constructor(baseUrl: string = 'http://localhost:11434', modelName: string = 'llama3') {
+    constructor(baseUrl: string = 'http://localhost:11434', modelName: string = 'llama3', apiKey?: string) {
         this.baseUrl = baseUrl.replace(/\/$/, '');
         this.modelName = modelName;
+        this.apiKey = apiKey;
     }
 
     async generateContent(prompt: string): Promise<AIResponse> {
         const systemPrompt = this.config?.systemPrompt || 'You are a professional Bazi (Four Pillars of Destiny) consultant. Return only valid JSON.';
         
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+        };
+
+        if (this.apiKey) {
+            headers['Authorization'] = `Bearer ${this.apiKey}`;
+        }
+        
         const res = await fetch(`${this.baseUrl}/api/chat`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             body: JSON.stringify({
                 model: this.modelName,
                 messages: [
