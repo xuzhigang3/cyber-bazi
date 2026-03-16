@@ -2,18 +2,23 @@ import { IAIProvider } from './interface';
 import { GeminiProvider } from './gemini';
 import { OpenAIProvider } from './openai';
 
-export async function getProvider(db?: any, env?: Record<string, string | undefined>): Promise<IAIProvider> {
+export async function getProvider(
+    db?: any, 
+    env?: any, 
+    requestedProvider?: string, 
+    requestedModel?: string
+): Promise<IAIProvider> {
     // In Cloudflare Pages Edge Runtime, env vars from the dashboard are in `env` context
     // process.env is a fallback for local development
     const getEnv = (key: string) => env?.[key] ?? process.env[key];
 
-    let providerType = getEnv('AI_PROVIDER') || 'gemini';
-    let aiModel = getEnv('AI_MODEL') || 'gemini-2.0-flash';
+    let providerType = requestedProvider || getEnv('AI_PROVIDER') || 'gemini';
+    let aiModel = requestedModel || getEnv('AI_MODEL') || 'gemini-2.0-flash';
     let temperature = 0.7;
     let systemPrompt: string | undefined = undefined;
 
-    // Try to get dynamic config from D1 if available
-    if (db) {
+    // Try to get dynamic config from D1 if available (if not explicitly requested by user)
+    if (db && !requestedProvider) {
         try {
             const { results } = await db.prepare(
                 "SELECT key, value FROM configs WHERE key IN ('AI_PROVIDER', 'AI_MODEL', 'AI_TEMPERATURE', 'AI_SYSTEM_PROMPT')"
@@ -26,7 +31,7 @@ export async function getProvider(db?: any, env?: Record<string, string | undefi
                 }, {});
 
                 if (configMap.AI_PROVIDER) providerType = configMap.AI_PROVIDER;
-                if (configMap.AI_MODEL) aiModel = configMap.AI_MODEL;
+                if (configMap.AI_MODEL && !requestedModel) aiModel = configMap.AI_MODEL;
                 if (configMap.AI_TEMPERATURE) temperature = parseFloat(configMap.AI_TEMPERATURE);
                 if (configMap.AI_SYSTEM_PROMPT) systemPrompt = configMap.AI_SYSTEM_PROMPT;
             }
@@ -51,6 +56,9 @@ export async function getProvider(db?: any, env?: Record<string, string | undefi
         const apiKey = getEnv('OLLAMA_API_KEY');
         const { OllamaProvider } = await import('./ollama');
         provider = new OllamaProvider(baseUrl, aiModel, apiKey);
+    } else if (providerType === 'cf-workers-ai' || providerType === 'workers-ai') {
+        const { WorkersAIProvider } = await import('./workers-ai');
+        provider = new WorkersAIProvider(env?.AI, aiModel);
     } else {
         // Default to Gemini
         const apiKey = getEnv('GEMINI_API_KEY');

@@ -12,8 +12,8 @@ class MockDB {
             bind: (...args: any[]) => ({
                 run: async () => {
                     if (query.includes('INSERT INTO reports')) {
-                        const [id, name, gender, date, time, location, email, y, m, d, h, sum, tea, full, paid, hash] = args;
-                        this.data[id] = { id, name, gender, date, time, location, email, bazi_year: y, bazi_month: m, bazi_day: d, bazi_hour: h, summary: sum, teaser: tea, full_report: full, is_paid: paid, input_hash: hash };
+                        const [id, name, gender, date, time, location, email, y, m, d, h, sumZh, sumEn, teaZh, teaEn, fullZh, fullEn, paid, hash] = args;
+                        this.data[id] = { id, name, gender, date, time, location, email, bazi_year: y, bazi_month: m, bazi_day: d, bazi_hour: h, summary_zh: sumZh, summary_en: sumEn, teaser_zh: teaZh, teaser_en: teaEn, full_report_zh: fullZh, full_report_en: fullEn, is_paid: paid, input_hash: hash };
                     }
                     if (query.includes('UPDATE reports SET is_paid = 1')) {
                         const [id] = args;
@@ -64,7 +64,7 @@ test('Full Business Workflow Test (Mocked)', async (t) => {
         // 3. Save to Mock DB
         const id = uuidv4();
         await db.prepare('INSERT INTO reports (...) VALUES (...)')
-            .bind(id, userInput.name, userInput.gender, userInput.date, userInput.time, userInput.location, userInput.email, aiResult.bazi.year, aiResult.bazi.month, aiResult.bazi.day, aiResult.bazi.hour, aiResult.summary, 'teaser...', aiResult.report, 0, inputHash)
+            .bind(id, userInput.name, userInput.gender, userInput.date, userInput.time, userInput.location, userInput.email, aiResult.bazi.year, aiResult.bazi.month, aiResult.bazi.day, aiResult.bazi.hour, aiResult.summary_zh, aiResult.summary_en, 'teaser_zh...', 'teaser_en...', aiResult.report_zh, aiResult.report_en, 0, inputHash)
             .run();
 
         const record = db.data[id];

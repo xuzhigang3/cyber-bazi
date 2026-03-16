@@ -58,10 +58,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    const providerType = (data as any).provider;
+    const modelName = (data as any).model;
+
     // --- AI generation (server-side only, key not exposed to client) ---
     const prompt = getDefaultPrompt(langInstruction, data, lang);
 
-    const provider = await getProvider(db, env as any);
+    const provider = await getProvider(db, env as any, providerType, modelName);
     const result = await provider.generateContent(prompt);
 
     // --- Calculate Cost (Simplified) ---

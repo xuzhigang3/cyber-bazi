@@ -9,6 +9,8 @@ export interface BaziInput {
   location: string;
   email: string;
   language?: 'zh' | 'en';
+  provider?: string;
+  model?: string;
 }
 
 export interface BaziResult {

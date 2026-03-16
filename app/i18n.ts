@@ -52,7 +52,13 @@ export const translations = {
     qrTitle: '扫码支付解锁',
     qrDesc: '支持信用卡、PayPal、支付宝。支付成功后页面将自动解锁（或手动刷新）。',
     qrDirectLink: '直接前往支付页',
-    qrClose: '关闭'
+    qrClose: '关闭',
+    aiSettings: 'AI 分析设置 (高级)',
+    aiProvider: 'AI 供应商',
+    aiModel: 'AI 模型',
+    providerGemini: 'Google Gemini',
+    providerOllama: 'Ollama (云端/本地)',
+    providerWorkersAI: 'Cloudflare Workers AI',
   },
   en: {
     appTitle: 'Destiny Insight',
@@ -105,7 +111,13 @@ export const translations = {
     qrTitle: 'Scan to Unlock',
     qrDesc: 'Supports Credit Card, PayPal, and Alipay. Page will unlock automatically after payment.',
     qrDirectLink: 'Go to Payment Page',
-    qrClose: 'Close'
+    qrClose: 'Close',
+    aiSettings: 'AI Analysis Settings (Advanced)',
+    aiProvider: 'AI Provider',
+    aiModel: 'AI Model',
+    providerGemini: 'Google Gemini',
+    providerOllama: 'Ollama (Cloud/Local)',
+    providerWorkersAI: 'Cloudflare Workers AI',
   }
 };
 

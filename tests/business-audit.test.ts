@@ -23,7 +23,7 @@ class BusinessAuditDB {
             run: async () => {
                 const args = boundArgs;
                 if (query.includes('INSERT INTO reports')) {
-                    const [id, n, g, d, t, l, e, y, m, day, h, sum, tea, full, paid, hash] = args;
+                    const [id, n, g, d, t, l, e, y, m, day, h, sZh, sEn, tZh, tEn, fZh, fEn, paid, hash] = args;
                     self.reports[id] = { id, name: n, is_paid: paid, input_hash: hash };
                 }
                 if (query.includes('INSERT INTO ai_usage')) {
@@ -69,7 +69,7 @@ test('High-Fidelity Business Integrity Audit', async (t) => {
         const inputHash = 'hash_123';
         const reportId = uuidv4();
 
-        await db.prepare('INSERT INTO reports ...').bind(reportId, 'User', 'M', '1990', '12', 'BJ', 'u@e.com', 'Y', 'M', 'D', 'H', 'Sum', 'Tea', 'Full', 0, inputHash).run();
+        await db.prepare('INSERT INTO reports ...').bind(reportId, 'User', 'M', '1990', '12', 'BJ', 'u@e.com', 'Y', 'M', 'D', 'H', 'SumZh', 'SumEn', 'TeaZh', 'TeaEn', 'FullZh', 'FullEn', 0, inputHash).run();
         const estCost = (mockUsage.promptTokens * 0.1 / 1000000) + (mockUsage.completionTokens * 0.4 / 1000000);
         await db.prepare('INSERT INTO ai_usage ...').bind(uuidv4(), 'gemini', 'gemini-2.0-flash', mockUsage.promptTokens, mockUsage.completionTokens, mockUsage.totalTokens, estCost).run();
 
@@ -80,7 +80,7 @@ test('High-Fidelity Business Integrity Audit', async (t) => {
 
     await t.test('Scenario 2: Admin Dashboard Aggregation', async () => {
         await db.prepare('INSERT INTO ai_usage ...').bind(uuidv4(), 'gemini', 'gemini-2.0-flash', 500, 1500, 2000, 0.001).run();
-        const stats = await db.prepare('SELECT SUM(total_tokens) as tokens, SUM(cost) as cost FROM ai_usage').first<any>();
+        const stats = await db.prepare('SELECT SUM(total_tokens) as tokens, SUM(cost) as cost FROM ai_usage').first();
 
         assert.ok(stats && stats.tokens === 1650 + 2000);
         testLog.push('✅ 管理后台首页聚合查询逻辑正确 (Stats Aggregation)');
@@ -88,7 +88,7 @@ test('High-Fidelity Business Integrity Audit', async (t) => {
 
     await t.test('Scenario 3: Hot-Swap AI Configuration', async () => {
         await db.prepare('INSERT OR REPLACE INTO configs ...').bind('AI_PROVIDER', 'openai').run();
-        const currentProvider = await db.prepare('SELECT value FROM configs WHERE key = ?').bind('AI_PROVIDER').first<any>();
+        const currentProvider = await db.prepare('SELECT value FROM configs WHERE key = ?').bind('AI_PROVIDER').first();
 
         assert.strictEqual(currentProvider.value, 'openai');
         testLog.push('✅ AI 供应商热切换响应正常 (Hot-Swap Verified)');
