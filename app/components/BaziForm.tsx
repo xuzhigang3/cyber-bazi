@@ -118,53 +118,6 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-theme-card/40 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-theme-accent/20 relative overflow-hidden shadow-[inset_0_0_80px_rgba(201,163,66,0.06),0_0_60px_rgba(0,0,0,0.5)]"
       >
-        {/* AI Selection Section */}
-        <div className="mb-8 p-4 rounded-xl bg-theme-accent/5 border border-theme-accent/10">
-          <label className="block text-[10px] font-serif text-theme-accent tracking-[0.2em] uppercase mb-4 opacity-80">{t('aiSettings')}</label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="block text-[10px] font-serif text-theme-muted tracking-[0.1em] uppercase">{t('aiProvider')}</label>
-              <select
-                name="provider"
-                value={formData.provider || 'gemini'}
-                onChange={handleChange}
-                className="w-full bg-theme-bg/50 border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-theme-accent font-serif"
-              >
-                <option value="gemini">{t('providerGemini')}</option>
-                <option value="ollama">{t('providerOllama')}</option>
-                <option value="cf-workers-ai">{t('providerWorkersAI')}</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="block text-[10px] font-serif text-theme-muted tracking-[0.1em] uppercase">{t('aiModel')}</label>
-              <select
-                name="model"
-                value={formData.model || ''}
-                onChange={handleChange}
-                className="w-full bg-theme-bg/50 border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-theme-accent font-serif"
-              >
-                {formData.provider === 'ollama' ? (
-                  <>
-                    <option value="gpt-oss:120b-cloud">GPT-OSS 120B (Cloud)</option>
-                    <option value="llama3">Llama 3 (Local)</option>
-                    <option value="qwen2.5:7b">Qwen 2.5 7B</option>
-                  </>
-                ) : formData.provider === 'cf-workers-ai' ? (
-                  <>
-                    <option value="@cf/meta/llama-3-8b-instruct">Llama 3 8B</option>
-                    <option value="@cf/qwen/qwen1.5-7b-chat-awq">Qwen 1.5 7B</option>
-                    <option value="@cf/google/gemma-7b-it">Gemma 7B</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                    <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                  </>
-                )}
-              </select>
-            </div>
-          </div>
-        </div>
         <div className="space-y-6">
           {/* Name */}
           <div className="space-y-2">
@@ -288,6 +241,57 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
               </span>
             )}
           </button>
+        </div>
+
+        {/* AI Selection Section (Advanced) */}
+        <div className="mt-12 p-5 rounded-2xl bg-theme-accent/5 border border-theme-accent/10 backdrop-blur-sm">
+          <label className="block text-[10px] font-serif text-theme-accent tracking-[0.2em] uppercase mb-5 opacity-80 flex items-center gap-2">
+            <Zap className="w-3 h-3" />
+            {t('aiSettings')}
+          </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-serif text-theme-muted tracking-[0.1em] uppercase">{t('aiProvider')}</label>
+              <select
+                name="provider"
+                value={formData.provider || 'gemini'}
+                onChange={handleChange}
+                className="w-full bg-theme-bg/60 border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-theme-accent/50 font-serif transition-all"
+              >
+                <option value="gemini">{t('providerGemini')}</option>
+                <option value="ollama">{t('providerOllama')}</option>
+                <option value="cf-workers-ai">{t('providerWorkersAI')}</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-serif text-theme-muted tracking-[0.1em] uppercase">{t('aiModel')}</label>
+              <select
+                name="model"
+                value={formData.model || ''}
+                onChange={handleChange}
+                className="w-full bg-theme-bg/60 border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-theme-accent/50 font-serif transition-all"
+              >
+                {formData.provider === 'ollama' ? (
+                  <>
+                    <option value="gpt-oss:120b-cloud">GPT-OSS 120B (Cloud)</option>
+                    <option value="llama3">Llama 3 (Local)</option>
+                    <option value="qwen2.5:7b">Qwen 2.5 7B</option>
+                  </>
+                ) : formData.provider === 'cf-workers-ai' ? (
+                  <>
+                    <option value="@cf/meta/llama-3-8b-instruct">Llama 3 8B</option>
+                    <option value="@cf/qwen/qwen1.5-7b-chat-awq">Qwen 1.5 7B</option>
+                    <option value="@cf/google/gemma-7b-it">Gemma 7B</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                    <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
         </div>
       </form>
     </main>

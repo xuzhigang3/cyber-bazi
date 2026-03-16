@@ -23,7 +23,8 @@ export class WorkersAIProvider implements IAIProvider {
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: prompt }
                 ],
-                temperature: this.config?.temperature ?? 0.7,
+                temperature: this.config?.temperature ?? 0.6,
+                max_tokens: 2500, // Ensure enough tokens for bilingual report
             });
 
             // Workers AI might return text or JSON depending on the model/output
@@ -47,9 +48,13 @@ export class WorkersAIProvider implements IAIProvider {
                 throw new Error('Workers AI did not return a valid JSON object');
             }
             const jsonStr = content.substring(firstBrace, lastBrace + 1);
-            const result = JSON.parse(jsonStr) as AIResponse;
-
-            return result;
+            try {
+                const result = JSON.parse(jsonStr) as AIResponse;
+                return result;
+            } catch (parseError) {
+                console.error('Workers AI JSON Parse Error. Raw content snippet:', content.substring(0, 200));
+                throw new Error('Failed to parse AI response as JSON');
+            }
         } catch (error: any) {
             throw new Error(`Workers AI error: ${error.message}`);
         }
