@@ -4,8 +4,8 @@ export const runtime = 'edge';
 
 export async function POST(request: Request) {
     try {
-        const { password } = await request.json();
-        const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin888';
+        const { password } = (await request.json()) as { password?: string };
+        const correctPassword = process.env.ADMIN_PASSWORD || 'admin888';
 
         if (password === correctPassword) {
             const response = NextResponse.json({ success: true });

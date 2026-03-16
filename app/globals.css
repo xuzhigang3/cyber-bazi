@@ -6,11 +6,6 @@
   --font-sans: "Microsoft YaHei", "微软雅黑", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Microsoft YaHei", "微软雅黑", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
-  --color-theme-bg: var(--bg-primary);
-  --color-theme-text: var(--text-primary);
-  --color-theme-muted: var(--text-secondary);
-  --color-theme-accent: var(--accent-color);
-  --color-theme-border: var(--border-color);
   --color-theme-bg: var(--theme-bg);
   --color-theme-text: var(--theme-text);
   --color-theme-muted: var(--theme-muted);
@@ -36,16 +31,6 @@ html {
   min-height: 100%;
 }
 
-@keyframes backgroundScroll {
-  from {
-    transform: translate(0, 0);
-  }
-
-  to {
-    transform: translate(-400px, -400px);
-  }
-}
-
 body {
   margin: 0;
   color: var(--theme-text);
@@ -53,47 +38,71 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  font-family: var(--font-inter);
+  font-family: var(--font-sans);
 }
 
+/* ── 背景：纯 CSS 云雾晕染，无接缝 ── */
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(120, 60, 180, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(100, 40, 160, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(80, 20, 140, 0.1) 0%, transparent 70%);
+  inset: 0;
   z-index: -1;
   pointer-events: none;
+
+  background:
+    /* 右上：暖金晕 */
+    radial-gradient(ellipse 65% 55% at 85% 8%, rgba(180, 120, 30, 0.18) 0%, transparent 70%),
+    /* 左下：深红晕 */
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(120, 30, 80, 0.20) 0%, transparent 65%),
+    /* 中央：冷紫晕（保留原有氛围） */
+    radial-gradient(ellipse 80% 70% at 50% 50%, rgba(80, 20, 140, 0.14) 0%, transparent 75%),
+    /* 左上：幽蓝晕 */
+    radial-gradient(ellipse 45% 40% at 5% 5%, rgba(50, 30, 100, 0.18) 0%, transparent 60%);
+
+  animation: bgDrift 28s ease-in-out infinite alternate;
 }
 
 body::after {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* 细噪点增加质感，不影响色调 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.6;
 }
 
-/* Dark Theme (Can be toggled by adding .theme-dark to body) */
-.theme-dark {
-  --bg-primary: #050505;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.6);
-  --accent-color: #C5A059;
-  /* Muted Gold */
-  --border-color: rgba(255, 255, 255, 0.15);
-  --card-bg: rgba(255, 255, 255, 0.03);
+@keyframes bgDrift {
+  0% {
+    opacity: 0.85;
+    transform: scale(1) translateY(0px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-6px);
+  }
+
+  100% {
+    opacity: 0.9;
+    transform: scale(1.01) translateY(5px);
+  }
 }
 
+/* ── 表单卡片 ── */
+form {
+  background: linear-gradient(135deg,
+      rgba(60, 20, 90, 0.6) 0%,
+      rgba(26, 11, 46, 0.75) 100%) !important;
+  box-shadow:
+    0 0 0 1px rgba(201, 163, 66, 0.15),
+    0 0 40px rgba(120, 60, 180, 0.12),
+    0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Prose 排版 ── */
 @layer utilities {
   .prose {
     @apply text-theme-text/80;
@@ -125,9 +134,4 @@ body::after {
   .prose blockquote {
     @apply border-l-2 border-theme-accent/50 pl-4 italic text-theme-muted my-6;
   }
-}
-
-form {
-  background: linear-gradient(135deg, rgba(60, 20, 90, 0.6) 0%, rgba(26, 11, 46, 0.75) 100%) !important;
-  box-shadow: 0 0 0 1px rgba(201, 163, 66, 0.15), 0 30px 80px rgba(0, 0, 0, 0.6);
 }
