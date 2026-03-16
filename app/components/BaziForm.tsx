@@ -279,9 +279,9 @@ export default function BaziForm({ onSubmit, isLoading, initialData }: Props) {
                   </>
                 ) : formData.provider === 'cf-workers-ai' ? (
                   <>
-                    <option value="@cf/meta/llama-3-8b-instruct">Llama 3 8B</option>
+                    <option value="@cf/meta/llama-3.1-8b-instruct-awq">Llama 3.1 8B (Recommended)</option>
+                    <option value="@cf/meta/llama-3.2-3b-instruct">Llama 3.2 3B (Fast)</option>
                     <option value="@cf/qwen/qwen1.5-7b-chat-awq">Qwen 1.5 7B</option>
-                    <option value="@cf/google/gemma-7b-it">Gemma 7B</option>
                   </>
                 ) : (
                   <>
