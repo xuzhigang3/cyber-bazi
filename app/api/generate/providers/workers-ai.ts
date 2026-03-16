@@ -15,7 +15,8 @@ export class WorkersAIProvider implements IAIProvider {
             throw new Error('Cloudflare Workers AI binding is not configured');
         }
 
-        const systemPrompt = this.config?.systemPrompt || 'You are a professional Bazi consultant. Return only valid JSON.';
+        const systemPrompt = this.config?.systemPrompt || 
+            'You are an expert Bazi master. You MUST return ONLY a valid JSON object. Do not include any introductory or concluding text. Do not use code blocks. Start your response with "{" and end with "}".';
         
         try {
             const response = await this.ai.run(this.modelName, {
@@ -23,8 +24,8 @@ export class WorkersAIProvider implements IAIProvider {
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: prompt }
                 ],
-                temperature: this.config?.temperature ?? 0.6,
-                max_tokens: 2500, // Ensure enough tokens for bilingual report
+                temperature: 0.1, // Lower temperature for more consistent JSON structure
+                max_tokens: 3500, // Increased to avoid truncation
             });
 
             // Workers AI might return text or JSON depending on the model/output
@@ -35,7 +36,8 @@ export class WorkersAIProvider implements IAIProvider {
                 content = response.response;
             } else if (response.result) {
                 content = response.result;
-            } else {
+            } else if (typeof response === 'object' && response !== null) {
+                // Some models return objects directly
                 content = JSON.stringify(response);
             }
 
@@ -44,16 +46,19 @@ export class WorkersAIProvider implements IAIProvider {
             // Find the first '{' and last '}' to extract JSON
             const firstBrace = content.indexOf('{');
             const lastBrace = content.lastIndexOf('}');
+            
             if (firstBrace === -1 || lastBrace === -1) {
+                console.error('Workers AI non-JSON content:', content.substring(0, 500));
                 throw new Error('Workers AI did not return a valid JSON object');
             }
+
             const jsonStr = content.substring(firstBrace, lastBrace + 1);
             try {
                 const result = JSON.parse(jsonStr) as AIResponse;
                 return result;
             } catch (parseError) {
-                console.error('Workers AI JSON Parse Error. Raw content snippet:', content.substring(0, 200));
-                throw new Error('Failed to parse AI response as JSON');
+                console.error('Workers AI JSON Parse Error. Length:', content.length, 'Snippet:', content.substring(0, 1000));
+                throw new Error('Failed to parse AI response as JSON. The output might be truncated.');
             }
         } catch (error: any) {
             throw new Error(`Workers AI error: ${error.message}`);
